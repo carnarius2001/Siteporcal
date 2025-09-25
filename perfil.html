@@ -286,12 +286,12 @@ function montarOpcoesFotos(inventario) {
   const opcoes = document.getElementById("opcoesFoto");
   // imagens padrão
   const base = [
-    "imagens/perfil1.jpg", 
-    "imagens/perfil2.jpg", 
-    "imagens/perfil3.jpg", 
-    "imagens/perfil4.jpg", 
-    "imagens/perfil5.jpg",
-    "gifs/Perfil6.gif",
+    "perfil1.jpg", 
+    "perfil2.jpg", 
+    "perfil3.jpg", 
+    "perfil4.jpg", 
+    "perfil5.jpg",
+    "Perfil6.gif",
   ];
   opcoes.innerHTML = "";
   base.forEach(src => {
@@ -314,7 +314,7 @@ function montarOpcoesFotos(inventario) {
   //67
   if (inventario && inventario["67.gif"]) {
     const img = document.createElement("img");
-    img.src = "gifs/67.gif";
+    img.src = "67.gif";
     img.alt = "67.gif";
     img.onclick = () => mudarFoto("67.gif");
     opcoes.appendChild(img);
