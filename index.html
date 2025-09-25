@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff6600">
   <meta charset="UTF-8">
   <title>Conhecimento Porcal</title>
   <style>
@@ -156,6 +158,42 @@
       font-size:0.9em;
       color:#888;
     }
+    /* ====== RESPONSIVIDADE ====== */
+
+/* Telas até 1024px (notebooks/tablets) */
+@media (max-width: 1024px) {
+  .hero h1 { font-size: 3.5em; }
+  .hero p { font-size: 1em; }
+  section { padding: 60px 6%; }
+  .cards { gap: 20px; }
+}
+
+/* Telas até 768px (tablets pequenos/celulares grandes) */
+@media (max-width: 768px) {
+  .topo { padding: 15px 20px; }
+  header { font-size: 1.2em; }
+
+  .hero { height: 70vh; }
+  .hero h1 { font-size: 2.8em; }
+  .hero p { font-size: 0.95em; }
+
+  .cards { flex-direction: column; align-items: center; }
+  .card { max-width: 90%; }
+  
+  .galeria { flex-direction: column; gap: 20px; }
+  .galeria-texto { text-align: center; }
+}
+
+/* Telas até 480px (celulares pequenos) */
+@media (max-width: 480px) {
+  .circle { width: 50px; height: 50px; }
+  #nomeUsuario { font-size: 0.7em; }
+
+  .hero h1 { font-size: 2.2em; }
+  .hero p { font-size: 0.85em; }
+
+  .btn, .card button { padding: 8px 16px; font-size: 0.9em; }
+}
   </style>
 </head>
 <body>
@@ -182,25 +220,25 @@
     <h2>Escolha sua Aventura</h2>
     <div class="cards">
       <div class="card">
-        <img src="quizimagem.jpg" alt="Quiz">
+        <img src="imagens/quizimagem.jpg" alt="Quiz">
         <h3>Quizzes</h3>
         <p>Teste seus conhecimentos de forma divertida.</p>
-        <button onclick="abrir('Quizes.html')">Explorar</button>
+        <button onclick="abrir('quizes.html')">Explorar</button>
       </div>
       <div class="card">
-        <img src="lojaimagem.jpg" alt="Loja">
+        <img src="imagens/lojaimagem.jpg" alt="Loja">
         <h3>Porktplace</h3>
         <p>Adquira itens exclusivos e personalize seu perfil.</p>
         <button onclick="abrir('loja.html')">Explorar</button>
       </div>
       <div class="card">
-        <img src="historiaimagem.jpg" alt="Histórias">
+        <img src="imagens/historiaimagem.jpg" alt="Histórias">
         <h3>Histórias</h3>
         <p>Descubra narrativas e segredos ocultos.</p>
-        <button onclick="abrir('Historias.html')">Explorar</button>
+        <button onclick="abrir('historias.html')">Explorar</button>
       </div>
             <div class="card">
-        <img src="codigoimagem.jpg" alt="Histórias">
+        <img src="imagens/codigoimagem.jpg" alt="Histórias">
         <h3>Histórias</h3>
         <p>Descubra narrativas e segredos ocultos.</p>
         <button onclick="abrir('codigo.html')">Explorar</button>
@@ -213,7 +251,7 @@
     <h2>Galeria</h2>
     <div class="">
       <div class="galeria-img">
-        <img src="codigoimagem.jpg" alt="Código">
+        <img src="imagens/codigoimagem.jpg" alt="Código">
       </div>
       <div class="galeria-texto">
         <h3>Kamchatka Solitude</h3>
@@ -241,5 +279,12 @@
       document.getElementById("nomeUsuario").textContent = nome;
     };
   </script>
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(() => console.log("Service Worker registrado"))
+      .catch(err => console.error("Erro no SW:", err));
+  }
+</script>
 </body>
 </html>
