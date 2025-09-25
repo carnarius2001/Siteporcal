@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Código Porcal</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 { margin-bottom: 20px; }
+    #codigoInput {
+      padding: 10px 15px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      width: 250px;
+      text-align: center;
+    }
+    /* Popup estilo Xbox */
+    #conquistaPopup {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.9);
+      border: 2px solid #0f0;
+      padding: 12px 16px;
+      border-radius: 10px;
+      display: none;
+      align-items: center;
+      font-weight: bold;
+      box-shadow: 0 0 12px #0f0;
+      gap: 10px;
+      animation: slideIn .3s ease-out;
+      z-index: 9999;
+    }
+    #conquistaPopup img { width:36px; height:36px; }
+    @keyframes slideIn {
+      from { transform: translateX(-120%);} 
+      to { transform: translateX(0);} 
+    }
+  </style>
+</head>
+<body>
+  <h1>Digite um código:</h1>
+  <input id="codigoInput" type="text" placeholder="Escreva aqui...">
+
+  <!-- Popup de conquista -->
+  <div id="conquistaPopup">
+    <img src="trofeu.png" alt="troféu">
+    <span id="conquistaTexto">Conquista desbloqueada!</span>
+  </div>
+
+  <!-- Som da conquista -->
+  <audio id="somConquista" preload="auto">
+    <source src="sons/somxbox.opus" type="audio/ogg; codecs=opus">
+    <source src="somxbox.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Música especial do código 67 -->
+  <audio id="musica67" preload="auto">
+    <source src="sons/67.opus" type="audio/ogg; codecs=opus">
+    <source src="67.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Som especial do código 10000 -->
+  <audio id="som10mil" preload="auto">
+    <source src="sons/10mil.opus" type="audio/ogg; codecs=opus">
+  </audio>
+
+  <!-- Som especial do código andrezitos -->
+  <audio id="somAndre" preload="auto">
+    <source src="sons/andre.opus" type="audio/ogg; codecs=opus">
+  </audio>
+  
+    <audio id="somhitler" preload="auto">
+    <source src="sons/hitler.opus" type="audio/ogg; codecs=opus">
+  </audio>
+
+  <script src="conquista.js"></script>
+  <script>
+    const input = document.getElementById("codigoInput");
+    const musica67 = document.getElementById("musica67");
+    const som10mil = document.getElementById("som10mil");
+    const somAndre = document.getElementById("somAndre");
+    const somhitler = document.getElementById("somhitler");
+
+    input.addEventListener("keydown", async (e) => {
+      if (e.key === "Enter") {
+        const val = input.value.trim().toLowerCase();
+        let conquistas = JSON.parse(localStorage.getItem("conquistas")) || {};
+
+        // Código 67
+        if (val === "67") {
+          if (conquistas["codigo67"]) {
+            ativarConquistaGlobal("⚠️ Código já usado!");
+          } else {
+            try {
+              musica67.currentTime = 0;
+              await musica67.play();
+              setTimeout(() => musica67.pause(), 16000);
+            } catch(err){ console.warn(err); }
+
+            let moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+            moedas += 67;
+            localStorage.setItem("moedasPorcais", moedas);
+
+            conquistas["codigo67"] = true;
+            localStorage.setItem("conquistas", JSON.stringify(conquistas));
+            ativarConquistaGlobal("🏆 +67 Porcais recebidos!");
+          }
+        }
+
+        // Código 10000 (10 mil reais)
+        else if (val === "10000") {
+          if (conquistas["dezmil"]) {
+            ativarConquistaGlobal("⚠️ Código já usado!");
+          } else {
+            try {
+              som10mil.currentTime = 0;
+              await som10mil.play();
+              setTimeout(() => som10mil.pause(), 16000);
+            } catch(err){ console.warn(err); }
+
+            conquistas["dezmil"] = true;
+            localStorage.setItem("conquistas", JSON.stringify(conquistas));
+            ativarConquistaGlobal("💰 Você desbloqueou a conquista dos 10 MIL REAIS!");
+          }
+        }
+
+        // Código andrezitos
+        else if (val === "andrezitos") {
+          if (conquistas["Garoto!"]) {
+            ativarConquistaGlobal("⚠️ Código já usado!");
+          } else {
+            try {
+              somAndre.currentTime = 0;
+              await somAndre.play();
+              setTimeout(() => somAndre.pause(), 16000);
+            } catch(err){ console.warn(err); }
+
+            conquistas["Garoto!"] = true;
+            localStorage.setItem("conquistas", JSON.stringify(conquistas));
+            ativarConquistaGlobal("💰 Eu como criança tá?");
+          }
+        }
+        
+        // codigo teste
+        else if (val === "teste") {
+          if (conquistas["teste"]) {
+            ativarConquistaGlobal("⚠️ Código já usado!");
+          } else {
+            try {
+              somhitler.currentTime = 0;
+              await somhitler.play();
+              setTimeout(() => somhitler.pause(), 16000);
+            } catch(err){ console.warn(err); }
+
+            conquistas["teste"] = true;
+            localStorage.setItem("conquistas", JSON.stringify(conquistas));
+            ativarConquistaGlobal("💰 teste");
+          }
+        }
+
+        // Código inválido
+        else if (val !== "") {
+          ativarConquistaGlobal("❌ Código inválido!");
+        }
+
+        input.value = "";
+      }
+    });
+    
+    
+  </script>
+</body>
+</html>

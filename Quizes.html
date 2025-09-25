@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quizzes do Culto Carnal</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    .container {
+      background: #222;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #000;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    h1, h2 { color: #FFD700; }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #444;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #666;
+    }
+    #nextBtn {
+      margin-top: 15px;
+      display: none;
+    }
+    #score {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    #perfil {
+      font-size: 14px;
+      margin-bottom: 10px;
+      background: #333;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    /* Animação das recompensas */
+    .popup {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      font-weight: bold;
+      opacity: 0;
+      animation: subir 1.5s forwards;
+      pointer-events: none;
+    }
+    @keyframes subir {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      70% { opacity: 1; transform: translate(-50%, -120%) scale(1.2); }
+      100% { opacity: 0; transform: translate(-50%, -200%) scale(0.8); }
+    }
+    .xp { color: #4CAF50; text-shadow: 0 0 8px #4CAF50; }
+    .moeda { color: #FFD700; text-shadow: 0 0 8px #FFD700; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Perfil -->
+    <div id="perfil"></div>
+
+    <!-- Menu inicial -->
+    <div id="menu">
+      <h1>Quizzes do Culto Carnal</h1>
+      <p>Escolha um quiz para começar:</p>
+      <div class="options">
+        <button onclick="iniciarQuiz(0)">📖 História do Culto</button>
+        <button onclick="iniciarQuiz(1)">🩸 Rituais e Sacrifícios</button>
+        <button onclick="iniciarQuiz(2)">😈 Entidades Carnívoras</button>
+        <button onclick="iniciarQuiz(3)">🧰 Artefatos Proibidos</button>
+        <button onclick="iniciarQuiz(4)">🔥 Profecias do Fim</button>
+      </div>
+    </div>
+
+    <!-- Área do quiz -->
+    <div id="quizArea" style="display:none;">
+      <h2 id="question">Pergunta</h2>
+      <div class="options" id="options"></div>
+      <button id="nextBtn">Próxima</button>
+      <p id="score"></p>
+    </div>
+  </div>
+
+  <!-- Aqui aparecem os popups -->
+  <div id="popups"></div>
+
+  <script>
+    // ================== SISTEMA DE PERFIL (XP + MOEDAS) ==================
+    function ganharXP(valor) {
+      let xp = parseInt(localStorage.getItem("xp")) || 0;
+      let nivel = parseInt(localStorage.getItem("nivel")) || 1;
+
+      xp += valor;
+      if (xp >= 100) {
+        xp -= 100;
+        nivel++;
+        alert("🎉 Você subiu para o nível " + nivel + "!");
+      }
+
+      localStorage.setItem("xp", xp);
+      localStorage.setItem("nivel", nivel);
+      atualizarPerfil();
+    }
+
+    function ganharMoedas(valor) {
+      let moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+      moedas += valor;
+      localStorage.setItem("moedasPorcais", moedas);
+      atualizarPerfil();
+    }
+
+    function atualizarPerfil() {
+      let xp = parseInt(localStorage.getItem("xp")) || 0;
+      let nivel = parseInt(localStorage.getItem("nivel")) || 1;
+      let moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+
+      document.getElementById("perfil").textContent = 
+        `🧍 Nível: ${nivel} | ⭐ XP: ${xp}/100 | 💰 Moedas: ${moedas}`;
+    }
+
+    // Função para mostrar o popup animado
+    function mostrarPopup(texto, classe) {
+      const popup = document.createElement("div");
+      popup.className = `popup ${classe}`;
+      popup.textContent = texto;
+      document.getElementById("popups").appendChild(popup);
+
+      setTimeout(() => popup.remove(), 1500);
+    }
+
+    // ================== QUIZ ==================
+    const quizzes = [
+      { nome: "História do Culto",
+        perguntas: [
+          { pergunta: "Quem fundou o culto carnal?", opcoes: ["O Porcão", "O Ancião da Carne", "O Rei Tubarão", "O Guardião da Gula"], correta: 1 },
+          { pergunta: "Em que era surgiu o culto?", opcoes: ["Idade da Carne", "Idade Média", "Era dos Ossos", "Era Industrial"], correta: 0 },
+          { pergunta: "Qual é o lema do culto?", opcoes: ["A carne é fraca", "Tudo pela carne", "Carne ao fogo eterno", "Sangue é poder"], correta: 1 }
+        ]
+      }
+      // ... os outros quizzes ficam aqui
+    ];
+
+    let quizAtual = null;
+    let indice = 0;
+    let pontos = 0;
+
+    const menu = document.getElementById("menu");
+    const quizArea = document.getElementById("quizArea");
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const scoreEl = document.getElementById("score");
+
+    function iniciarQuiz(indiceQuiz) {
+      quizAtual = quizzes[indiceQuiz];
+      indice = 0;
+      pontos = 0;
+      menu.style.display = "none";
+      quizArea.style.display = "block";
+      carregarPergunta();
+    }
+
+    function carregarPergunta() {
+      const q = quizAtual.perguntas[indice];
+      questionEl.textContent = q.pergunta;
+      optionsEl.innerHTML = "";
+      q.opcoes.forEach((opcao, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opcao;
+        btn.onclick = () => verificarResposta(i);
+        optionsEl.appendChild(btn);
+      });
+      nextBtn.style.display = "none";
+      scoreEl.textContent = "";
+    }
+
+    function verificarResposta(i) {
+      if (i === quizAtual.perguntas[indice].correta) {
+        pontos++;
+        ganharXP(20);
+        ganharMoedas(10);
+        mostrarPopup("+20 XP", "xp");
+        mostrarPopup("+10 🪙", "moeda");
+      }
+      Array.from(optionsEl.children).forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === quizAtual.perguntas[indice].correta) {
+          btn.style.background = "green";
+        } else if (idx === i) {
+          btn.style.background = "red";
+        }
+      });
+      nextBtn.style.display = "block";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      indice++;
+      if (indice < quizAtual.perguntas.length) {
+        carregarPergunta();
+      } else {
+        questionEl.textContent = `Fim do quiz "${quizAtual.nome}"!`;
+        optionsEl.innerHTML = "";
+        nextBtn.style.display = "none";
+        scoreEl.textContent = `Você acertou ${pontos} de ${quizAtual.perguntas.length}. (+${pontos*20} XP, +${pontos*10} moedas)`;
+        setTimeout(() => {
+          quizArea.style.display = "none";
+          menu.style.display = "block";
+        }, 3000);
+      }
+    });
+
+    atualizarPerfil();
+  </script>
+</body>
+</html>

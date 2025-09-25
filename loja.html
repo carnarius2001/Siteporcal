@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+      <div class="perfil" onclick="abrir('perfil.html')">
+      <div class="circle"><img id="perfilImg" src="perfil1.jpg" alt="Perfil"></div>
+      <span id="nomeUsuario">Jogador</span>
+       <p>Suas moedas: <span id="moedas">0</span> 🪙</p>
+
+    </div>
+  <meta charset="UTF-8">
+  <title>Loja PORCAIS</title>
+  <style>
+    /* Estilo geral */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f8f8f8;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cabeçalho da loja */
+h2 {
+  text-align: center;
+  margin: 30px 0;
+  font-size: 1.8em;
+  color: #111;
+  letter-spacing: 1px;
+}
+
+/* Container loja */
+#loja {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Categorias */
+#categorias {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+#categorias button {
+  background: #fff;
+  color: #111;
+  border: 2px solid #111;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#categorias button:hover,
+#categorias button.ativo {
+  background: #111;
+  color: #fff;
+}
+
+/* Seções em grade */
+.secao {
+  display: none;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.secao.ativa {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* Card de item */
+.item {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.item:hover {
+  transform: translateY(-5px);
+}
+
+.item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.item h3 {
+  font-size: 1.1em;
+  margin: 10px;
+  color: #111;
+}
+
+.item p {
+  margin: 5px 10px;
+  color: #444;
+  font-size: 0.95em;
+}
+
+/* Botões dentro dos cards */
+.item button {
+  display: block;
+  width: calc(100% - 20px);
+  margin: 10px;
+  padding: 10px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.item button:hover {
+  background: #444;
+}
+
+/* Inventário */
+#inventario {
+  max-width: 1100px;
+  margin: 40px auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+#inventario h2 {
+  color: #111;
+}
+
+#lista-inventario {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+}
+
+#lista-inventario li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95em;
+  color: #333;
+}
+
+/* Popup estilo Xbox */
+#conquistaPopup {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0,0,0,0.92);
+  border: 2px solid #0f0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 1.05em;
+  font-weight: 700;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 0 14px #0f0;
+  z-index: 9999;
+  animation: slideIn 0.4s ease-out;
+}
+
+#conquistaPopup img { width:36px; height:36px; }
+
+@keyframes slideIn { 
+  from { transform: translateX(-120%); } 
+  to { transform: translateX(0); } 
+}
+    .perfil { display:flex; flex-direction:column; align-items:center; cursor:pointer; }
+    .circle { width:70px; height:70px; border-radius:50%; overflow:hidden; border:3px solid #FFD700; box-shadow:0 0 8px #000; }
+    .circle img { width:100%; height:100%; object-fit:cover; }
+    #nomeUsuario { margin-top:5px; font-size:0.9em; font-weight:bold; color:#fff; }
+
+  </style>
+</head>
+<body>
+  <!-- Loja -->
+  <div id="loja">
+    <!-- Botões de categoria -->
+<div id="categorias">
+  <button onclick="mostrarSecao('historia')" class="ativo">História</button>
+  <button onclick="mostrarSecao('gifs')">GIFs</button>
+  <button onclick="mostrarSecao('imagens')">Imagens</button>
+</div>
+    <h2>Loja PORCAIS</h2> </div>
+
+    <!-- Seção HISTÓRIA -->
+<div id="historia" class="secao ativa">
+  <div class="item">
+    <h3>📜 História Oculta</h3>
+    <img src="imagens/texto.jpg" width="175" height="130" >
+    <p>Preço: 82 🪙</p>
+    <button onclick="comprarHistoriaOculta()">Comprar</button>
+  </div>
+</div>
+
+<!-- Seção GIFs -->
+<div id="gifs" class="secao">
+  <div class="item">
+    <h3>Gif de muitas dimensões</h3>
+    <p>materia.gif — Preço: 20 🪙</p>
+    <img src="gifs/materia.gif" width="175" height="130" >
+    <button onclick="comprarGifMateria()">Comprar</button>
+  </div>
+
+  <div class="item">
+    <h3>Gif six seveno</h3>
+    <p>67.gif — Preço: 20 🪙</p>
+    <img src="gifs/67.gif" width="175" height="130" >
+    <button onclick="comprarGif67()">Comprar</button>
+  </div>
+</div>
+
+<!-- Seção IMAGENS -->
+<div id="imagens" class="secao">
+  <div class="item">
+    <h3>Espada de Carne</h3>
+    <p>Preço: 10 🪙</p>
+    <button onclick="comprar('Espada de Carne', 10)">Comprar</button>
+  </div>
+
+  <div class="item">
+    <h3>Poção Estranha</h3>
+    <p>Preço: 5 🪙</p>
+    <button onclick="comprar('Poção Estranha', 5)">Comprar</button>
+  </div>
+
+  <div class="item">
+    <h3>Escudo Orgânico</h3>
+    <p>Preço: 8 🪙</p>
+    <button onclick="comprar('Escudo Orgânico', 8)">Comprar</button>
+  </div>
+</div>
+  <!-- Inventário -->
+  <div id="inventario">
+    <h2>Inventário</h2>
+    <ul id="lista-inventario"></ul>
+  </div>
+
+  <!-- Popup de conquista -->
+  <div id="conquistaPopup">
+    <img src="trofeu.png" alt="troféu">
+    <span id="conquistaTexto">Conquista desbloqueada!</span>
+  </div>
+
+  <!-- Som da conquista -->
+  <audio id="somConquista" preload="auto">
+    <source src="sons/somxbox.opus" type="audio/ogg; codecs=opus">
+    <source src="somxbox.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const canalMoedas = new BroadcastChannel("canalMoedas");
+
+    function atualizarMoedas() {
+      let moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+      document.getElementById("moedas").textContent = moedas;
+      canalMoedas.postMessage(moedas);
+    }
+
+    function atualizarInventario() {
+      let inventario = JSON.parse(localStorage.getItem("inventario")) || {};
+      let lista = document.getElementById("lista-inventario");
+      lista.innerHTML = "";
+      let i = 1;
+      for (let item in inventario) {
+        lista.innerHTML += `<li>${i}. ${item} (x${inventario[item]})</li>`;
+        i++;
+      }
+    }
+
+    function ativarConquista(texto) {
+      const popup = document.getElementById("conquistaPopup");
+      const textoSpan = document.getElementById("conquistaTexto");
+      const som = document.getElementById("somConquista");
+
+      textoSpan.textContent = texto;
+      popup.style.display = "flex";
+
+      som.currentTime = 0;
+      som.play();
+
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 4000);
+    }
+
+    function verificarConquistaComprador() {
+      let conquistas = JSON.parse(localStorage.getItem("conquistas")) || {};
+      let inventario = JSON.parse(localStorage.getItem("inventario")) || {};
+      let total = 0;
+      for (let item in inventario) total += inventario[item];
+
+      if (!conquistas["comprador"] && total >= 5) {
+        conquistas["comprador"] = true;
+        localStorage.setItem("conquistas", JSON.stringify(conquistas));
+        ativarConquista("🏆 Comprador carnal!");
+      }
+    }
+
+    function comprar(nome, preco) {
+      let moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+      if (moedas < preco) {
+        alert("Você não tem moedas suficientes!");
+        return;
+      }
+      moedas -= preco;
+      localStorage.setItem("moedasPorcais", moedas);
+
+      let inventario = JSON.parse(localStorage.getItem("inventario")) || {};
+      inventario[nome] = (inventario[nome] || 0) + 1;
+      localStorage.setItem("inventario", JSON.stringify(inventario));
+
+      atualizarMoedas();
+      atualizarInventario();
+      verificarConquistaComprador();
+    }
+
+    function comprarGif67() {
+      comprar("67.gif", 20);
+      alert("🎉 Você comprou o 67.gif!");
+    }
+
+    function comprarHistoriaOculta() {
+      let moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+      if (moedas < 82) {
+        alert("Você não tem moedas suficientes para desbloquear a História Oculta!");
+        return;
+      }
+      moedas -= 82;
+      localStorage.setItem("moedasPorcais", moedas);
+      localStorage.setItem("historiaOculta", "true");
+
+      alert("📜 Você desbloqueou a História Oculta! Agora ela aparece na aba de Histórias.");
+      atualizarMoedas();
+      atualizarInventario();
+      verificarConquistaComprador();
+    }
+
+    atualizarMoedas();
+    atualizarInventario();
+  </script>
+  
+  <!-- Script de conquistas centralizado -->
+  <script src="conquista.js"></script>
+  <script>
+    function abrir(pagina){ 
+      window.location.href = pagina; 
+    }
+
+    // Carrega perfil salvo
+    window.onload = function(){
+      const foto = localStorage.getItem("fotoPerfil") || "perfil1.jpg";
+      const nome = localStorage.getItem("nomePerfil") || "Jogador";
+      document.getElementById("perfilImg").src = foto;
+      document.getElementById("nomeUsuario").textContent = nome;
+
+      // Verifica se já desbloqueou a conquista do perfil
+      const conquistaJaDesbloqueada = localStorage.getItem("conquistaPerfil");
+      if (!conquistaJaDesbloqueada && (foto !== "perfil1.jpg" || nome !== "Jogador")) {
+        ativarConquistaGlobal("👤 Perfil configurado!");
+        localStorage.setItem("conquistaPerfil", "true"); // marca que já desbloqueou
+      }
+    };
+    function mostrarSecao(id) {
+  // Esconde todas
+  document.querySelectorAll('.secao').forEach(sec => sec.classList.remove('ativa'));
+  // Mostra a escolhida
+  document.getElementById(id).classList.add('ativa');
+
+  // Atualiza botão ativo
+  document.querySelectorAll('#categorias button').forEach(btn => btn.classList.remove('ativo'));
+  event.target.classList.add('ativo');
+}
+  </script>
+</body>
+</html>

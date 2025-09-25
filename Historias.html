@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Histórias Carnal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #f1f1f1;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .selecoes {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 600px;
+    }
+    .historia-card {
+      background: #222;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 12px #000;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+    .historia-card:hover {
+      transform: scale(1.02);
+      background: #333;
+    }
+    .historia-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .historia-info {
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    .historia {
+      display: none;
+      max-width: 700px;
+      background: #222;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #000;
+      line-height: 1.6em;
+      margin-top: 20px;
+    }
+    .historia.ativa {
+      display: block;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: #444;
+      color: #f1f1f1;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #555;
+    }
+    .botoes {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Popup de conquista (estilo xbox) */
+    .popupConquista {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,0,0,0.92);
+      color: #fff;
+      border: 2px solid #0f0;
+      padding: 12px 16px;
+      border-radius: 10px;
+      box-shadow: 0 0 14px #0f0;
+      z-index: 99999;
+      transform: translateX(-120%);
+      opacity: 0;
+      transition: transform .35s ease, opacity .35s ease;
+      font-weight: 700;
+    }
+    .popupConquista.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .popupConquista .icone { font-size: 20px; width:32px; text-align:center; }
+  </style>
+</head>
+<body>
+  <header>📜 Escolha sua História</header>
+
+  <!-- Seleção de histórias -->
+  <div class="selecoes" id="selecao-historias">
+    <div class="historia-card" onclick="mostrarHistoria('historia1')">
+      <img src="historia1.jpg" alt="História 1">
+      <div class="historia-info">História 1 - O Carnarius Boinarius</div>
+    </div>
+    <div class="historia-card" onclick="mostrarHistoria('historia2')">
+      <img src="historia2.jpg" alt="História 2">
+      <div class="historia-info">História 2 - (Em breve)</div>
+    </div>
+    <div class="historia-card" onclick="mostrarHistoria('historia3')">
+      <img src="historia3.jpg" alt="História 3">
+      <div class="historia-info">História 3 - (Em breve)</div>
+    </div>
+  </div>
+
+  <!-- História 1 -->
+  <div class="historia" id="historia1">
+    <h2>O Carnarius Boinarius</h2>
+    <p>Há <b>67 bilhões de anos</b>, o <b>carnarius boinarius</b> invadiu os véus da realidade humana e transgrediu os seres de existência carnal.</p>
+    <p>Consubindo em extensão bidimensional abaixo dos sistemas refrativos existentes, ele alcançou a Terra, onde a vida era rudimentar.</p>
+    <p>Ali, ele fundou a <b>primeira religião do mundo</b>: os <i>Carbous</i>, um culto dedicado à carne bovina.</p>
+    <p>Os Carbous construíram grandes templos, mantendo viva a chama carnal por eras incontáveis...</p>
+    <div class="botoes">
+      <button onclick="voltarSelecao()">Voltar</button>
+      <button onclick="finalizarHistoria('historia1')">Finalizar</button>
+    </div>
+  </div>
+
+  <!-- História 2 -->
+  <div class="historia" id="historia2">
+    <h2>História 2</h2>
+    <p>⚠️ Ainda não escrita.</p>
+    <div class="botoes">
+      <button onclick="voltarSelecao()">Voltar</button>
+      <button onclick="finalizarHistoria('historia2')">Finalizar</button>
+    </div>
+  </div>
+
+  <!-- História 3 -->
+  <div class="historia" id="historia3">
+    <h2>História 3</h2>
+    <p>⚠️ Ainda não escrita.</p>
+    <div class="botoes">
+      <button onclick="voltarSelecao()">Voltar</button>
+      <button onclick="finalizarHistoria('historia3')">Finalizar</button>
+    </div>
+  </div>
+
+  <!-- História Oculta -->
+  <div class="historia" id="historiaOculta">
+    <h2>História Oculta - Os Pastos de Quantus Vazus</h2>
+    <p>Nos antigos <b>pastos de Quantus Vazus</b>, seres de dimensões superiores vagavam em campos verdejantes além do concebimento visual humano.</p>
+    <p>Sua existência não era regida pelo tempo linear, mas pela carnalidade que se expandia através das eras.</p>
+    <p>Esses pastores cósmicos moldavam a carne primordial em formas incompreensíveis, guiando o fluxo da matéria viva para planos ocultos.</p>
+    <p>Diz-se que até hoje, quando o vento sopra sobre certas planícies, é possível ouvir o mugido eterno dos vazus ancestrais...</p>
+    <div class="botoes">
+      <button onclick="voltarSelecao()">Voltar</button>
+      <button onclick="finalizarHistoria('historiaOculta')">Finalizar</button>
+    </div>
+  </div>
+
+  <!-- audio do som padrão de conquista (usado pelo popup) -->
+  <audio id="somConquista" preload="auto">
+    <source src="sons/somxbox.opus" type="audio/ogg; codecs=opus">
+    <source src="somxbox.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    function mostrarHistoria(id) {
+      document.querySelector(".selecoes").style.display = "none";
+      document.querySelectorAll(".historia").forEach(h => h.classList.remove("ativa"));
+      document.getElementById(id).classList.add("ativa");
+    }
+
+    function voltarSelecao() {
+      document.querySelectorAll(".historia").forEach(h => h.classList.remove("ativa"));
+      document.querySelector(".selecoes").style.display = "flex";
+    }
+
+    function finalizarHistoria(id) {
+      alert("História concluída! Você sente o chamado carnal...");
+
+      // XP e nível
+      let xp = parseInt(localStorage.getItem("xp")) || 0;
+      let nivel = parseInt(localStorage.getItem("nivel")) || 1;
+      xp += 30;
+      if (xp >= 100) {
+        xp -= 100;
+        nivel++;
+        localStorage.setItem("nivel", nivel);
+        alert("Você subiu para o nível " + nivel + "!");
+      }
+      localStorage.setItem("xp", xp);
+
+      // moedas
+      let moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+      moedas += 10;
+      localStorage.setItem("moedasPorcais", moedas);
+      new BroadcastChannel("canalMoedas").postMessage(moedas);
+
+      // conquista "Conhecimento da carne"
+      if (id === "historia1") {
+        let conquistas = JSON.parse(localStorage.getItem("conquistas")) || {};
+        if (!conquistas["conhecimento"]) {
+          conquistas["conhecimento"] = true;
+          localStorage.setItem("conquistas", JSON.stringify(conquistas));
+
+          // show popup local e broadcast para outras abas
+          mostrarPopupConquista("Conhecimento da carne", "📜");
+          try {
+            const canalConquista = new BroadcastChannel("canalConquista");
+            canalConquista.postMessage({ titulo: "Conhecimento da carne", icone: "📜" });
+          } catch(e) { /* ignora se não suportado */ }
+        }
+      }
+
+      window.location.href = "perfil.html";
+    }
+
+    // Mostrar card da história oculta se desbloqueada
+    function adicionarHistoriaOculta() {
+      if (!document.getElementById("cardHistoriaOculta")) {
+        let selecoes = document.getElementById("selecao-historias");
+        let card = document.createElement("div");
+        card.id = "cardHistoriaOculta";
+        card.className = "historia-card";
+        card.setAttribute("onclick", "mostrarHistoria('historiaOculta')");
+        card.innerHTML = `
+          <img src="historiaOculta.jpg" alt="História Oculta">
+          <div class="historia-info">História Oculta - Os Pastos de Quantus Vazus</div>
+        `;
+        selecoes.appendChild(card);
+      }
+    }
+
+    // canal para ouvir desbloqueios vindos da loja (historia oculta)
+    const canalHistoria = new BroadcastChannel("canalHistoria");
+    canalHistoria.onmessage = (e) => {
+      if (e.data === "historiaOculta") {
+        adicionarHistoriaOculta();
+      }
+    };
+
+    // canal para receber pedidos de popup de conquista vindos de outras abas
+    const canalConquista = new BroadcastChannel("canalConquista");
+    canalConquista.onmessage = (e) => {
+      try {
+        const data = e.data;
+        if (typeof data === "string") {
+          // compatibilidade com mensagens simples
+          mostrarPopupConquista(data, "🏆");
+        } else if (data && data.titulo) {
+          mostrarPopupConquista(data.titulo, data.icone || "🏆");
+        }
+      } catch (err) { console.warn(err); }
+    };
+
+    // função que cria popup + toca somxbox.opus
+    function mostrarPopupConquista(titulo, icone) {
+      // toca som
+      try {
+        const audio = document.getElementById("somConquista");
+        audio.currentTime = 0;
+        audio.play().catch(()=>{});
+      } catch(e){}
+
+      // cria elemento
+      const popup = document.createElement("div");
+      popup.className = "popupConquista";
+      popup.innerHTML = `<span class="icone">${icone || "🏆"}</span><div><strong>${titulo}</strong></div>`;
+
+      document.body.appendChild(popup);
+
+      // forçar reflow e mostrar
+      setTimeout(() => popup.classList.add("show"), 20);
+
+      // remover depois
+      setTimeout(() => {
+        popup.classList.remove("show");
+        setTimeout(() => popup.remove(), 350);
+      }, 4000);
+    }
+
+    // inicialização: mostrar história oculta caso já comprada (ouvida também via canal)
+    window.addEventListener("load", () => {
+      if (localStorage.getItem("historiaOculta") === "true") {
+        adicionarHistoriaOculta();
+      }
+    });
+  </script>
+</body>
+</html>

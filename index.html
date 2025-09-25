@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Conhecimento Porcal</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0a0a2a 0%, #0d0d3a 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x:hidden;
+    }
+
+    /* Topo */
+    .topo {
+      width: 100%;
+      background: transparent;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      position: absolute;
+      top:0; left:0;
+      z-index: 10;
+    }
+    header {
+      font-size: 1.5em;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .perfil { display:flex; flex-direction:column; align-items:center; cursor:pointer; }
+    .circle { width:60px; height:60px; border-radius:50%; overflow:hidden; border:3px solid #FFD700; }
+    .circle img { width:100%; height:100%; object-fit:cover; }
+    #nomeUsuario { margin-top:5px; font-size:0.8em; font-weight:bold; color:#fff; }
+
+    /* Hero (banner principal) */
+    .hero {
+      position: relative;
+      height: 100vh;
+      background: url("imagens/fundo-montanha.jpg") no-repeat center/cover;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:white;
+    }
+    .hero::after {
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.55);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size:5em;
+      font-weight:900;
+      letter-spacing:3px;
+    }
+    .hero p { margin-top:15px; font-size:1.2em; }
+
+    .btn {
+      margin-top:25px;
+      background:#ff6600;
+      color:#fff;
+      border:none;
+      padding:12px 24px;
+      font-size:1em;
+      border-radius:8px;
+      cursor:pointer;
+      transition:background .3s;
+    }
+    .btn:hover { background:#e65500; }
+
+    /* Seções */
+    section {
+      padding:80px 10%;
+      text-align:center;
+    }
+    section h2 {
+      font-size:2em;
+      margin-bottom:20px;
+      letter-spacing:1px;
+    }
+
+    /* Cards de aventura */
+    .cards {
+      display:flex;
+      justify-content:center;
+      gap:30px;
+      flex-wrap:wrap;
+      margin-top:40px;
+    }
+    .card {
+      flex:1;
+      min-width:220px;
+      max-width:280px;
+      background:#1a1a3a;
+      border-radius:12px;
+      padding:20px;
+      transition:transform .2s;
+    }
+    .card:hover { transform:scale(1.05); }
+    .card img {
+      width:100%;
+      border-radius:10px;
+      margin-bottom:15px;
+    }
+    .card h3 { font-size:1.2em; margin-bottom:10px; }
+    .card p { font-size:0.9em; color:#ccc; margin-bottom:15px; }
+    .card button {
+      background:#ff6600;
+      border:none;
+      padding:10px 20px;
+      border-radius:8px;
+      color:#fff;
+      cursor:pointer;
+    }
+
+    /* Galeria */
+    .galeria {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:40px;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+    .galeria-img {
+      flex:1;
+      min-width:250px;
+      max-width:400px;
+    }
+    .galeria-img img {
+      width:100%;
+      border-radius:12px;
+    }
+    .galeria-texto {
+      flex:1;
+      min-width:250px;
+      text-align:left;
+    }
+    .galeria-texto h3 { font-size:1.5em; margin-bottom:10px; }
+    .galeria-texto p { margin-bottom:15px; }
+
+    footer {
+      text-align:center;
+      padding:20px;
+      background:#000;
+      margin-top:40px;
+      font-size:0.9em;
+      color:#888;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topo -->
+  <div class="topo">
+    <header>CONHECIMENTO PORCAL</header>
+    <div class="perfil" onclick="abrir('perfil.html')">
+      <div class="circle"><img id="perfilImg" src="perfil1.jpg" alt="Perfil"></div>
+      <span id="nomeUsuario">Jogador</span>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>PORCAL</h1>
+      <p>Descubra aventuras únicas com quizzes, histórias e mais.</p>
+    </div>
+  </section>
+
+  <!-- Aventura -->
+  <section>
+    <h2>Escolha sua Aventura</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="imagens/quizimagem.jpg" alt="Quiz">
+        <h3>Quizzes</h3>
+        <p>Teste seus conhecimentos de forma divertida.</p>
+        <button onclick="abrir('quizes.html')">Explorar</button>
+      </div>
+      <div class="card">
+        <img src="imagens/lojaimagem.jpg" alt="Loja">
+        <h3>Porktplace</h3>
+        <p>Adquira itens exclusivos e personalize seu perfil.</p>
+        <button onclick="abrir('loja.html')">Explorar</button>
+      </div>
+      <div class="card">
+        <img src="imagens/historiaimagem.jpg" alt="Histórias">
+        <h3>Histórias</h3>
+        <p>Descubra narrativas e segredos ocultos.</p>
+        <button onclick="abrir('historias.html')">Explorar</button>
+      </div>
+            <div class="card">
+        <img src="imagens/codigoimagem.jpg" alt="Histórias">
+        <h3>Histórias</h3>
+        <p>Descubra narrativas e segredos ocultos.</p>
+        <button onclick="abrir('codigo.html')">Explorar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galeria -->
+  <section>
+    <h2>Galeria</h2>
+    <div class="">
+      <div class="galeria-img">
+        <img src="imagens/codigoimagem.jpg" alt="Código">
+      </div>
+      <div class="galeria-texto">
+        <h3>Kamchatka Solitude</h3>
+        <p>Uma experiência única em meio às montanhas e lagos.</p>
+        <button class="btn" onclick="abrir('codigo.html')">Ver mais</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    © Conhecimento Porcal 2025 — Todos os direitos reservados
+  </footer>
+
+  <script>
+    function abrir(pagina){
+      window.location.href = pagina;
+    }
+
+    // Carrega perfil salvo
+    window.onload = function(){
+      const foto = localStorage.getItem("fotoPerfil") || "perfil1.jpg";
+      const nome = localStorage.getItem("nomePerfil") || "Jogador";
+      document.getElementById("perfilImg").src = foto;
+      document.getElementById("nomeUsuario").textContent = nome;
+    };
+  </script>
+</body>
+</html>

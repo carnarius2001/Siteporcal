@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #f1f1f1;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .perfil {
+      text-align: center;
+      background: #222;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #000;
+      width: 380px;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    .perfil img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #555;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .nome { font-size: 1.4em; margin-bottom: 10px; }
+    .editar { margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; }
+    .editar input {
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 10px;
+      display: none;
+      text-align: center;
+      width: 80%;
+      max-width: 200px;
+    }
+    .editar button, .extra button {
+      background: #444;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+      margin: 3px;
+    }
+    .editar button:hover, .extra button:hover { background: #666; }
+    .opcoes-foto { margin: 15px 0; display: none; }
+    .opcoes-foto img {
+      width: 60px; height: 60px; border-radius: 50%;
+      margin: 5px; cursor: pointer; border: 2px solid transparent;
+    }
+    .opcoes-foto img:hover { border: 2px solid #fff; }
+    .moedas { margin: 20px 0; font-size: 1.2em; font-weight: bold; }
+    #progressoXP { margin: 20px 0; text-align: center; }
+    .barra {
+      width: 100%; height: 20px; background: #333;
+      border: 2px solid #FFD700; border-radius: 12px;
+      overflow: hidden; margin: 5px 0;
+    }
+    #xpBarra { height: 100%; width: 0%; background: linear-gradient(90deg, #00ff00, #009900); transition: width 0.4s; }
+    .inventario { margin-top: 20px; text-align: left; }
+    .item {
+      margin: 5px 0; padding: 8px; background: #333;
+      border: 1px solid #FFD700; border-radius: 6px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .item span { font-weight: bold; }
+    .conquistas { margin-top: 20px; text-align: left; }
+    .conquista {
+      background: #2d2d2d; border: 1px solid #888;
+      padding: 8px; margin: 5px 0; border-radius: 6px;
+    }
+    .conquista.desbloqueada { border-color: #0f0; background: #1a331a; }
+    .conquista span { font-weight: bold; color: #FFD700; }
+    .extra { margin-top: 20px; }
+    #conquistasAtivas {
+      position: fixed; bottom: 20px; right: 20px;
+      display: flex; flex-direction: column; gap: 10px;
+      z-index: 9999; pointer-events: none;
+    }
+    .popupConquista {
+      pointer-events: auto; background: #222; border-left: 5px solid #0f0;
+      color: #fff; padding: 10px 15px; border-radius: 8px 0 0 8px;
+      box-shadow: 0 0 10px #000; font-size: 14px;
+      display: flex; align-items: center; gap: 10px;
+      animation: slideIn 0.5s forwards, fadeOut 0.5s 3.0s forwards;
+    }
+    .popupConquista .icone {
+      width: 32px; height: 32px; display: inline-block;
+      flex: 0 0 32px; text-align: center; line-height: 32px; font-size: 18px;
+    }
+    @keyframes slideIn { from { transform: translateX(150%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateX(150%); } }
+    :root {
+  --fundo: #111;
+  --painel: #222;
+  --texto: #f1f1f1;
+  --botoes: #444;
+  --botoes-hover: #666;
+  --borda: #FFD700;
+}
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+.perfil {
+  background: var(--painel);
+}
+
+.editar button, .extra button {
+  background: var(--botoes);
+}
+.editar button:hover, .extra button:hover {
+  background: var(--botoes-hover);
+}
+.barra {
+  border: 2px solid var(--borda);
+}
+.item {
+  border: 1px solid var(--borda);
+}
+.conquista span {
+  color: var(--borda);
+}
+
+/* 🔧 painel de customização */
+#painelCustom {
+  display: none;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #222;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #000;
+  z-index: 9999;
+  width: 300px;
+  text-align: center;
+}
+#painelCustom h3 { margin-bottom: 10px; }
+#painelCustom label { display: block; margin: 10px 0 5px; }
+#painelCustom input[type="color"] {
+  width: 100%;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+}
+#painelCustom button {
+  margin-top: 15px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  background: var(--botoes);
+  color: #fff;
+  cursor: pointer;
+}
+#painelCustom button:hover { background: var(--botoes-hover); }
+  </style>
+</head>
+<body>
+  <div class="perfil">
+    <img id="fotoPerfil" src="perfil1.jpg" alt="Foto de Perfil">
+    <div class="nome" id="nomePerfil">Jogador</div>
+    <button onclick="abrirCustom()">🎨 Customizar</button>
+
+    <div class="editar">
+      <input type="text" id="nomeInput" placeholder="Digite seu nome">
+      <button id="btnEditarNome">Editar Nome</button>
+      <button id="btnSalvarNome" style="display:none;">Salvar</button>
+      <button id="btnEditarFoto">Trocar Foto</button>
+    </div>
+
+    <!-- opções de fotos -->
+    <div class="opcoes-foto" id="opcoesFoto">
+      <!-- Será preenchido dinamicamente -->
+    </div>
+
+    <div class="moedas">
+      Porcais: <span id="moedas">0</span>
+    </div>
+
+    <!-- XP -->
+    <div id="progressoXP">
+      <p>Nível: <span id="nivel">1</span></p>
+      <div class="barra"><div id="xpBarra"></div></div>
+      <p><span id="xpAtual">0</span>/100 XP</p>
+    </div>
+
+    <div class="inventario">
+      <h3>Inventário</h3>
+      <div id="itensComprados"><p>Nenhum item comprado ainda!</p></div>
+    </div>
+
+    <div class="conquistas">
+      <h3>🏆 Conquistas</h3>
+      <div id="listaConquistas"><p>Nenhuma conquista desbloqueada ainda!</p></div>
+    </div>
+
+    <div class="extra">
+      <button onclick="resetarPerfil()">Resetar Perfil</button>
+      <button onclick="mostrarPopupConquista('Conquista Teste!')">Conquista Teste</button>
+    </div>
+  </div>
+
+  <div id="conquistasAtivas"></div>
+
+  <!-- som padrão de conquista -->
+  <audio id="somConquista" preload="auto">
+    <source src="somxbox.opus" type="audio/ogg; codecs=opus">
+    <source src="somxbox.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- som exclusivo da conquista "10 mil reais" -->
+  <audio id="som10mil" preload="auto">
+    <source src="10mil.opus" type="audio/ogg; codecs=opus">
+    <source src="10mil.mp3" type="audio/mpeg">
+  </audio>
+
+<script>
+/* ---------- Definições de conquistas (na ordem pedida) ---------- */
+const conquistasDefinidas = [
+  { id: "mudanca", nome: "Mudança carnal", desc: "Você mudou o perfil.", icone: "👤" },
+  { id: "conhecimento", nome: "Conhecimento da carne", desc: "Você leu a primeira história carnal.", icone: "📜" },
+  { id: "comprador", nome: "Comprador carnal", desc: "Você comprou 5 itens.", icone: "🛒" },
+  { id: "sixseven", nome: "Six seven!!", desc: "Você alcançou 67 moedas.", icone: "🔥" },
+  { id: "dezmil", nome: "10 MIL REAIS!!!", desc: "Você descobriu o código secreto '10 mil reais'.", icone: "💰" },
+    { id: "teste", nome: "teste", desc: "teste.", icone: "💰" },
+];
+
+/* ---------- Funções de inicialização ---------- */
+function carregarPerfil() {
+  const nome = localStorage.getItem("nomePerfil") || "Jogador";
+  const foto = localStorage.getItem("fotoPerfil") || "perfil1.jpg";
+  const moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+  const inventario = JSON.parse(localStorage.getItem("inventario")) || {};
+  const xp = parseInt(localStorage.getItem("xp")) || 0;
+  const nivel = parseInt(localStorage.getItem("nivel")) || 1;
+
+  document.getElementById("nomePerfil").innerText = nome;
+  document.getElementById("fotoPerfil").src = foto;
+  document.getElementById("moedas").innerText = moedas;
+  document.getElementById("nivel").innerText = nivel;
+
+  const porcentagem = Math.max(0, Math.min(100, xp));
+  document.getElementById("xpBarra").style.width = porcentagem + "%";
+  document.getElementById("xpAtual").innerText = xp;
+
+  atualizarInventarioVisual(inventario);
+
+  verificarConquistas(moedas, Object.keys(inventario).reduce((s,k)=>s+inventario[k],0));
+  mostrarConquistas();
+  montarOpcoesFotos(inventario);
+}
+
+/* ---------- Inventário ---------- */
+function atualizarInventarioVisual(inventario){
+  const container = document.getElementById("itensComprados");
+  container.innerHTML = "";
+  const keys = Object.keys(inventario);
+  if(keys.length === 0){
+    container.innerHTML = "<p>Nenhum item comprado ainda!</p>";
+    return;
+  }
+  keys.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `<span>${item}</span><span>x${inventario[item]}</span>`;
+    container.appendChild(div);
+  });
+}
+
+/* ---------- Opções de foto (inclui materia.gif só se comprado) ---------- */
+function montarOpcoesFotos(inventario) {
+  const opcoes = document.getElementById("opcoesFoto");
+  // imagens padrão
+  const base = [
+    "imagens/perfil1.jpg", 
+    "imagens/perfil2.jpg", 
+    "imagens/perfil3.jpg", 
+    "imagens/perfil4.jpg", 
+    "imagens/perfil5.jpg",
+    "gifs/Perfil6.gif",
+  ];
+  opcoes.innerHTML = "";
+  base.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = src;
+    img.onclick = () => mudarFoto(src);
+    opcoes.appendChild(img);
+  });
+
+  // materia.gif disponível apenas se comprado
+  if (inventario && inventario["materia.gif"]) {
+    const img = document.createElement("img");
+    img.src = "gifs/materia.gif";
+    img.alt = "materia.gif";
+    img.onclick = () => mudarFoto("materia.gif");
+    opcoes.appendChild(img);
+  }
+  
+  //67
+  if (inventario && inventario["67.gif"]) {
+    const img = document.createElement("img");
+    img.src = "gifs/67.gif";
+    img.alt = "67.gif";
+    img.onclick = () => mudarFoto("67.gif");
+    opcoes.appendChild(img);
+  }
+
+  // upload
+  const div = document.createElement("div");
+  div.style.marginTop = "10px";
+  div.innerHTML = `<label style="cursor:pointer; background:#444; padding:6px 12px; border-radius:6px;">
+      📁 Escolher da galeria
+      <input type="file" id="uploadFoto" accept="image/*,image/gif" style="display:none">
+    </label>`;
+  opcoes.appendChild(div);
+
+  const upload = div.querySelector("#uploadFoto");
+  upload.addEventListener("change", function(event){
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e){
+      localStorage.setItem("fotoPerfil", e.target.result);
+      document.getElementById("fotoPerfil").src = e.target.result;
+      document.getElementById("opcoesFoto").style.display = "none";
+      desbloquearConquista("mudanca");
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ---------- Moedas sincronizadas entre abas ---------- */
+const canalMoedas = new BroadcastChannel("canalMoedas");
+canalMoedas.onmessage = (ev) => {
+  localStorage.setItem("moedasPorcais", ev.data);
+  carregarPerfil();
+};
+
+/* ---------- Mudar foto / nome ---------- */
+function mudarFoto(foto) {
+  localStorage.setItem("fotoPerfil", foto);
+  document.getElementById("fotoPerfil").src = foto;
+  document.getElementById("opcoesFoto").style.display = "none";
+  desbloquearConquista("mudanca");
+}
+
+/* ---------- XP / Nivel (função pública caso outras páginas queiram dar XP) ---------- */
+function ganharXP(valor){
+  let xp = parseInt(localStorage.getItem("xp")) || 0;
+  let nivel = parseInt(localStorage.getItem("nivel")) || 1;
+  xp += valor;
+  if(xp >= 100){
+    xp -= 100;
+    nivel++;
+    localStorage.setItem("nivel", nivel);
+    // mostrar notificação de subida de nível
+    mostrarPopupConquista("Você subiu para o nível " + nivel + "!", "🏅");
+  }
+  localStorage.setItem("xp", xp);
+  carregarPerfil();
+}
+
+/* ---------- Verificação e desbloqueio de conquistas ---------- */
+function verificarConquistas(moedas, totalItens) {
+  let conquistas = JSON.parse(localStorage.getItem("conquistas")) || {};
+  let mudou = false;
+
+  // Mudança carnal (nome ou foto diferente do padrão)
+  if (!conquistas["mudanca"] && (localStorage.getItem("nomePerfil") !== "Jogador" || localStorage.getItem("fotoPerfil") !== "perfil1.jpg")) {
+    conquistas["mudanca"] = true;
+    mostrarPopupConquista("Mudança carnal", "👤");
+    tocarSomConquista();
+    mudou = true;
+  }
+
+  // Comprador carnal (comprou 5 itens no total)
+  if (!conquistas["comprador"] && totalItens >= 5) {
+    conquistas["comprador"] = true;
+    mostrarPopupConquista("Comprador carnal", "🛒");
+    tocarSomConquista();
+    mudou = true;
+  }
+
+  // Six seven!! (>=67 moedas)
+  if (!conquistas["sixseven"] && Number(moedas) >= 67) {
+    conquistas["sixseven"] = true;
+    mostrarPopupConquista("Six seven!!", "🔥");
+    tocarSomConquista();
+    mudou = true;
+  }
+  //conquista teste
+    if (!conquistas["teste"] && Number(moedas) >= 100) {
+    conquistas["teste"] = true;
+    mostrarPopupConquista("testando!!", "🔥");
+    tocarSomConquista();
+    mudou = true;
+  }
+
+  // Conhecimento da carne pode ser definido por outra página; aqui apenas respeitamos se já estiver
+  // (por exemplo, historias.html deve salvar conquistas.conhecimento = true quando o usuário finalizar a história)
+  if (!conquistas["conhecimento"] && JSON.parse(localStorage.getItem("conquistas") || "{}")["conhecimento"]) {
+    // se já foi marcada por outra página, só exibe popup aqui:
+    conquistas["conhecimento"] = true;
+    mostrarPopupConquista("Conhecimento da carne", "📜");
+    tocarSomConquista();
+    mudou = true;
+  }
+
+  if (mudou) localStorage.setItem("conquistas", JSON.stringify(conquistas));
+}
+
+/* chama essa função para desbloquear programaticamente */
+function desbloquearConquista(id) {
+  const conquistas = JSON.parse(localStorage.getItem("conquistas")) || {};
+  if (conquistas[id]) return; // já desbloqueada
+
+  conquistas[id] = true;
+  localStorage.setItem("conquistas", JSON.stringify(conquistas));
+
+  const def = conquistasDefinidas.find(c => c.id === id);
+  if (def) {
+    mostrarPopupConquista(def.nome, def.icone);
+    if (id === "dezmil") tocarSom10Mil();
+    else tocarSomConquista();
+    mostrarConquistas();
+  }
+}
+
+/* ---------- Mostrar lista de conquistas ---------- */
+function mostrarConquistas() {
+  const conquistas = JSON.parse(localStorage.getItem("conquistas")) || {};
+  const lista = document.getElementById("listaConquistas");
+  lista.innerHTML = "";
+  conquistasDefinidas.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "conquista";
+    if (conquistas[c.id]) div.classList.add("desbloqueada");
+    div.innerHTML = `<span>${c.nome}</span><br><small>${c.desc}</small>`;
+    lista.appendChild(div);
+  });
+}
+
+/* ---------- Sons ---------- */
+function tocarSomConquista() {
+  const audio = document.getElementById("somConquista");
+  try { audio.currentTime = 0; audio.play().catch(()=>{}); } catch(e){}
+}
+function tocarSom10Mil() {
+  const audio = document.getElementById("som10mil");
+  try { audio.currentTime = 0; audio.play().catch(()=>{}); } catch(e){}
+}
+
+/* ---------- Popup visual (aparece sobre o lobby se chamado) ---------- */
+function mostrarPopupConquista(texto, icone) {
+  const container = document.getElementById("conquistasAtivas");
+  const div = document.createElement("div");
+  div.className = "popupConquista";
+  const iconeHTML = icone ? `<span class="icone">${icone}</span>` : `<span class="icone">🏆</span>`;
+  div.innerHTML = `${iconeHTML}<div><strong>${texto}</strong></div>`;
+  container.appendChild(div);
+  // remover depois
+  setTimeout(() => {
+    div.remove();
+  }, 3500);
+}
+
+/* ---------- Interação dos botões (editar nome / foto etc) ---------- */
+document.getElementById("btnEditarNome").addEventListener("click", () => {
+  document.getElementById("opcoesFoto").style.display = "none";
+  document.getElementById("nomeInput").style.display = "block";
+  document.getElementById("btnSalvarNome").style.display = "inline-block";
+  document.getElementById("nomeInput").focus();
+});
+
+document.getElementById("btnSalvarNome").addEventListener("click", () => {
+  const novoNome = document.getElementById("nomeInput").value.trim();
+  if (novoNome !== "") {
+    localStorage.setItem("nomePerfil", novoNome);
+    document.getElementById("nomePerfil").innerText = novoNome;
+    desbloquearConquista("mudanca");
+  }
+  document.getElementById("nomeInput").value = "";
+  document.getElementById("nomeInput").style.display = "none";
+  document.getElementById("btnSalvarNome").style.display = "none";
+  carregarPerfil();
+});
+
+document.getElementById("btnEditarFoto").addEventListener("click", () => {
+  document.getElementById("nomeInput").style.display = "none";
+  document.getElementById("btnSalvarNome").style.display = "none";
+  const opcoesFoto = document.getElementById("opcoesFoto");
+  opcoesFoto.style.display = opcoesFoto.style.display === "block" ? "none" : "block";
+});
+
+/* ---------- Reset ---------- */
+function resetarPerfil() {
+  if (confirm("Tem certeza que deseja resetar tudo?")) {
+    localStorage.clear();
+    carregarPerfil();
+  }
+}
+
+/* ---------- Inicialização ---------- */
+window.addEventListener("load", () => {
+  // Expor função global para outras páginas usarem (por exemplo lobby/história/código)
+  window.desbloquearConquista = desbloquearConquista;
+  // também expor ativarConquistaGlobal para compatibilidade com seu código existente
+  window.ativarConquistaGlobal = function(texto) {
+    mostrarPopupConquista(texto, "🏆");
+    try { document.getElementById("somConquista").currentTime = 0; document.getElementById("somConquista").play().catch(()=>{}); } catch(e){}
+  };
+
+  carregarPerfil();
+});
+
+/* ---------- Ajudas públicas (opcionais) ---------- */
+// função pública para atualizar moedas (usada por outras páginas)
+window.atualizarMoedasPerfil = function(){
+  const moedas = parseInt(localStorage.getItem("moedasPorcais")) || 0;
+  document.getElementById("moedas").innerText = moedas;
+  // re-verifica conquistas condicionadas a moedas
+  verificarConquistas(moedas, Object.values(JSON.parse(localStorage.getItem("inventario")||"{}")).reduce((s,v)=>s+v,0));
+};
+/* ---------- Customização ---------- */
+function aplicarCustom() {
+  const cores = JSON.parse(localStorage.getItem("customCores")) || {};
+  if (cores.fundo) document.documentElement.style.setProperty("--fundo", cores.fundo);
+  if (cores.painel) document.documentElement.style.setProperty("--painel", cores.painel);
+  if (cores.texto) document.documentElement.style.setProperty("--texto", cores.texto);
+  if (cores.botoes) document.documentElement.style.setProperty("--botoes", cores.botoes);
+  if (cores.borda) document.documentElement.style.setProperty("--borda", cores.borda);
+}
+function abrirCustom() {
+  const cores = JSON.parse(localStorage.getItem("customCores")) || {};
+  document.getElementById("corFundo").value = cores.fundo || "#111111";
+  document.getElementById("corPainel").value = cores.painel || "#222222";
+  document.getElementById("corTexto").value = cores.texto || "#f1f1f1";
+  document.getElementById("corBotoes").value = cores.botoes || "#444444";
+  document.getElementById("corBorda").value = cores.borda || "#FFD700";
+  document.getElementById("painelCustom").style.display = "block";
+}
+function fecharCustom() {
+  document.getElementById("painelCustom").style.display = "none";
+}
+function salvarCustom() {
+  const cores = {
+    fundo: document.getElementById("corFundo").value,
+    painel: document.getElementById("corPainel").value,
+    texto: document.getElementById("corTexto").value,
+    botoes: document.getElementById("corBotoes").value,
+    borda: document.getElementById("corBorda").value
+  };
+  localStorage.setItem("customCores", JSON.stringify(cores));
+  aplicarCustom();
+  fecharCustom();
+  desbloquearConquista("artista"); // 🏆 nova conquista
+}
+/* aplica as cores salvas ao carregar */
+window.addEventListener("load", aplicarCustom);
+
+/* ---------- Adiciona a conquista do artista ---------- */
+conquistasDefinidas.push({
+  id: "artista",
+  nome: "Artista carnal",
+  desc: "Você personalizou o perfil.",
+  icone: "🎨"
+});
+</script>
+<div id="painelCustom">
+  <h3>Customização</h3>
+  <label>Fundo</label>
+  <input type="color" id="corFundo">
+  <label>Painel</label>
+  <input type="color" id="corPainel">
+  <label>Texto</label>
+  <input type="color" id="corTexto">
+  <label>Botões</label>
+  <input type="color" id="corBotoes">
+  <label>Borda</label>
+  <input type="color" id="corBorda">
+  <button onclick="salvarCustom()">Salvar</button>
+  <button onclick="fecharCustom()">Fechar</button>
+</div>
+</body>
+</html>
