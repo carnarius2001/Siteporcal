@@ -1,23 +1,24 @@
-const CACHE_NAME = "porcal-v1";
-const URLS_TO_CACHE = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/style.css", 
-  "/script.js",
-  "/imagens/fundo-montanha.jpg"
-];
-
-self.addEventListener("install", (event) => {
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(URLS_TO_CACHE))
+    caches.open("porcal-v1").then(cache => {
+      return cache.addAll([
+        "index.html",
+        "manifest.json",
+        "perfil1.jpg",
+        "imagens/fundo-montanha.jpg",
+        "imagens/quizimagem.jpg",
+        "imagens/lojaimagem.jpg",
+        "imagens/historiaimagem.jpg",
+        "imagens/codigoimagem.jpg"
+      ]);
+    })
   );
 });
 
-self.addEventListener("fetch", (event) => {
+self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    caches.match(event.request).then(resp => {
+      return resp || fetch(event.request);
     })
   );
 });
