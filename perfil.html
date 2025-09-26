@@ -167,6 +167,42 @@ body {
   cursor: pointer;
 }
 #painelCustom button:hover { background: var(--botoes-hover); }
+/* ====== RESPONSIVIDADE ====== */
+
+/* Telas até 1024px (notebooks/tablets) */
+@media (max-width: 1024px) {
+  .hero h1 { font-size: 3.5em; }
+  .hero p { font-size: 1em; }
+  section { padding: 60px 6%; }
+  .cards { gap: 20px; }
+}
+
+/* Telas até 768px (tablets pequenos/celulares grandes) */
+@media (max-width: 768px) {
+  .topo { padding: 15px 20px; }
+  header { font-size: 1.2em; }
+
+  .hero { height: 70vh; }
+  .hero h1 { font-size: 2.8em; }
+  .hero p { font-size: 0.95em; }
+
+  .cards { flex-direction: column; align-items: center; }
+  .card { max-width: 90%; }
+  
+  .galeria { flex-direction: column; gap: 20px; }
+  .galeria-texto { text-align: center; }
+}
+
+/* Telas até 480px (celulares pequenos) */
+@media (max-width: 480px) {
+  .circle { width: 50px; height: 50px; }
+  #nomeUsuario { font-size: 0.7em; }
+
+  .hero h1 { font-size: 2.2em; }
+  .hero p { font-size: 0.85em; }
+
+  .btn, .card button { padding: 8px 16px; font-size: 0.9em; }
+}
   </style>
 </head>
 <body>
@@ -305,7 +341,7 @@ function montarOpcoesFotos(inventario) {
   // materia.gif disponível apenas se comprado
   if (inventario && inventario["materia.gif"]) {
     const img = document.createElement("img");
-    img.src = "gifs/materia.gif";
+    img.src = "materia.gif";
     img.alt = "materia.gif";
     img.onclick = () => mudarFoto("materia.gif");
     opcoes.appendChild(img);

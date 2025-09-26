@@ -194,6 +194,34 @@
 
   .btn, .card button { padding: 8px 16px; font-size: 0.9em; }
 }
+.sidebar {
+  width: 0;
+  max-width: 80%; /* em telas pequenas, a sidebar não ocupa toda a tela */
+}
+
+.sidebar img {
+  max-width: 100%; /* nunca estoura a tela */
+  height: auto;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  .sidebar {
+    padding-top: 40px;
+  }
+  h1, h2 {
+    font-size: 1.1em;
+  }
+}
   </style>
 </head>
 <body>
@@ -220,25 +248,25 @@
     <h2>Escolha sua Aventura</h2>
     <div class="cards">
       <div class="card">
-        <img src="imagens/quizimagem.jpg" alt="Quiz">
+        <img src="quizimagem.jpg" alt="Quiz">
         <h3>Quizzes</h3>
         <p>Teste seus conhecimentos de forma divertida.</p>
         <button onclick="abrir('quizes.html')">Explorar</button>
       </div>
       <div class="card">
-        <img src="imagens/lojaimagem.jpg" alt="Loja">
+        <img src="lojaimagem.jpg" alt="Loja">
         <h3>Porktplace</h3>
         <p>Adquira itens exclusivos e personalize seu perfil.</p>
         <button onclick="abrir('loja.html')">Explorar</button>
       </div>
       <div class="card">
-        <img src="imagens/historiaimagem.jpg" alt="Histórias">
+        <img src="historiaimagem.jpg" alt="Histórias">
         <h3>Histórias</h3>
         <p>Descubra narrativas e segredos ocultos.</p>
         <button onclick="abrir('historias.html')">Explorar</button>
       </div>
             <div class="card">
-        <img src="imagens/codigoimagem.jpg" alt="Histórias">
+        <img src="codigoimagem.jpg" alt="Histórias">
         <h3>Histórias</h3>
         <p>Descubra narrativas e segredos ocultos.</p>
         <button onclick="abrir('codigo.html')">Explorar</button>
@@ -251,7 +279,7 @@
     <h2>Galeria</h2>
     <div class="">
       <div class="galeria-img">
-        <img src="imagens/codigoimagem.jpg" alt="Código">
+        <img src="codigoimagem.jpg" alt="Código">
       </div>
       <div class="galeria-texto">
         <h3>Kamchatka Solitude</h3>
